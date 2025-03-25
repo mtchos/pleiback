@@ -3,7 +3,7 @@ package handler
 import (
 	"encoding/json"
 	"github.com/go-chi/chi/v5"
-	"github.com/mtchos/pleiback/internal/domain/usecase"
+	"github.com/mtchos/pleiback/old/internal/domain/usecase"
 	"log/slog"
 	"net/http"
 )

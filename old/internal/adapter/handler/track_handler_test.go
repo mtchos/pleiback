@@ -2,10 +2,10 @@ package handler
 
 import (
 	"encoding/json"
-	"github.com/mtchos/pleiback/internal/adapter/integration/spotify"
-	"github.com/mtchos/pleiback/internal/adapter/integration/spotify/mock"
-	"github.com/mtchos/pleiback/internal/domain/entity"
-	"github.com/mtchos/pleiback/internal/domain/service"
+	"github.com/mtchos/pleiback/old/internal/adapter/integration/spotify"
+	"github.com/mtchos/pleiback/old/internal/adapter/integration/spotify/mock"
+	"github.com/mtchos/pleiback/old/internal/domain/entity"
+	"github.com/mtchos/pleiback/old/internal/domain/service"
 	"go.uber.org/mock/gomock"
 	"net/http"
 	"net/http/httptest"
@@ -60,7 +60,7 @@ func TestTrackHandler_Search(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	mockSpotifyService := mock_spotify.NewMockIntegration(ctrl)
+	mockSpotifyService := mock_spotify.mock_spotify.NewMockIntegration(ctrl)
 	var searchResponse spotify.SearchTracksResponse
 	err := json.Unmarshal([]byte(searchResponseStr), &searchResponse)
 	if err != nil {

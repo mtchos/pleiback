@@ -10,9 +10,9 @@
 package mock
 
 import (
+	"github.com/mtchos/pleiback/old/internal/domain/entity"
 	reflect "reflect"
 
-	entity "github.com/mtchos/pleiback/internal/domain/entity"
 	gomock "go.uber.org/mock/gomock"
 )
 

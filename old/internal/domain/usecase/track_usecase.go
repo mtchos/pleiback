@@ -1,7 +1,7 @@
 package usecase
 
 import (
-	"github.com/mtchos/pleiback/internal/domain/entity"
+	"github.com/mtchos/pleiback/old/internal/domain/entity"
 )
 
 type TrackService interface {

@@ -1,17 +1,17 @@
 package spotify
 
 import (
-	"github.com/mtchos/pleiback/internal/domain/entity"
+	entity2 "github.com/mtchos/pleiback/old/internal/domain/entity"
 )
 
 type Integration interface {
 	SearchTracks(query string, limit, offset int64) (SearchTracksResponse, error)
 	GetArtists(artistsIDs []string) (GetArtistsResponse, error)
-	CreatePlaylist(userID string, playlist entity.Playlist) (CreatePlaylistResponse, error)
+	CreatePlaylist(userID string, playlist entity2.Playlist) (CreatePlaylistResponse, error)
 	AddPlaylistTracks(playlistID string, tracksIDs []string) error
 }
 
-type SearchTracksResponse = []entity.Track
+type SearchTracksResponse = []entity2.Track
 
 var SearchTracksResult struct {
 	Tracks struct {
@@ -31,11 +31,11 @@ var SearchTracksResult struct {
 }
 
 type GetArtistsResponse struct {
-	Artists []entity.Artist
+	Artists []entity2.Artist
 }
 
 type CreatePlaylistResponse struct {
-	Tracks      []entity.Track
+	Tracks      []entity2.Track
 	Name        string
 	Description string
 	URI         string

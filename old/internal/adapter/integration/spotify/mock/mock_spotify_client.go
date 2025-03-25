@@ -10,10 +10,10 @@
 package mock_spotify
 
 import (
+	"github.com/mtchos/pleiback/old/internal/adapter/integration/spotify"
+	"github.com/mtchos/pleiback/old/internal/domain/entity"
 	reflect "reflect"
 
-	spotify "github.com/mtchos/pleiback/internal/adapter/integration/spotify"
-	entity "github.com/mtchos/pleiback/internal/domain/entity"
 	gomock "go.uber.org/mock/gomock"
 )
 

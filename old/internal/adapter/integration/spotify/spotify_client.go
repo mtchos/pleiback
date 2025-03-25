@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/joho/godotenv"
-	"github.com/mtchos/pleiback/internal/domain/entity"
+	entity2 "github.com/mtchos/pleiback/old/internal/domain/entity"
 	"io"
 	"log"
 	"log/slog"
@@ -77,9 +77,9 @@ func (s Client) SearchTracks(query string, limit int64, offset int64) (SearchTra
 
 	slog.Info("tracks JSON found", "tracks", resp.Body)
 
-	var tracks []entity.Track
+	var tracks []entity2.Track
 	for _, item := range result.Tracks.Items {
-		tracks = append(tracks, entity.Track{
+		tracks = append(tracks, entity2.Track{
 			ID:      item.ID,
 			Name:    item.Name,
 			Artists: extractArtists(item.Artists),
@@ -96,7 +96,7 @@ func (s Client) GetArtists(artistsIDs []string) (GetArtistsResponse, error) {
 	panic("implement me")
 }
 
-func (s Client) CreatePlaylist(userID string, playlist entity.Playlist) (CreatePlaylistResponse, error) {
+func (s Client) CreatePlaylist(userID string, playlist entity2.Playlist) (CreatePlaylistResponse, error) {
 	//TODO implement me
 	panic("implement me")
 }
@@ -109,10 +109,10 @@ func (s Client) AddPlaylistTracks(playlistID string, tracksIDs []string) error {
 func extractArtists(artists []struct {
 	ID   string `json:"id"`
 	Name string `json:"name"`
-}) []entity.Artist {
-	var artistEntities []entity.Artist
+}) []entity2.Artist {
+	var artistEntities []entity2.Artist
 	for _, artist := range artists {
-		artistEntities = append(artistEntities, entity.Artist{
+		artistEntities = append(artistEntities, entity2.Artist{
 			ID:   artist.ID,
 			Name: artist.Name,
 		})

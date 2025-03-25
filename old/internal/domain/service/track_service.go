@@ -1,9 +1,9 @@
 package service
 
 import (
-	"github.com/mtchos/pleiback/internal/adapter/integration/spotify"
-	"github.com/mtchos/pleiback/internal/domain/entity"
-	"github.com/mtchos/pleiback/internal/domain/usecase"
+	"github.com/mtchos/pleiback/old/internal/adapter/integration/spotify"
+	"github.com/mtchos/pleiback/old/internal/domain/entity"
+	"github.com/mtchos/pleiback/old/internal/domain/usecase"
 	"log/slog"
 )
 
