@@ -1,31 +1,45 @@
 package main
 
 import (
-	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/chi/v5/middleware"
+	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/middleware"
+	"github.com/joho/godotenv"
+	"github.com/mtchos/pleiback/handler"
 	"github.com/mtchos/pleiback/spotify"
-	"github.com/mtchos/pleiback/track"
-	"log"
 	"log/slog"
 	"net/http"
+	"time"
 )
 
 func main() {
+	if err := godotenv.Load(); err != nil {
+		slog.Error("error loading godotenv", "err", err)
+		return
+	}
+
 	r := chi.NewRouter()
 
 	r.Use(middleware.Logger)
 
-	client := &http.Client{}
+	client := &http.Client{
+		Timeout: 10 * time.Second,
+	}
 
-	spotifyClient := spotify.NewClient(client)
+	stfyUserAuth := spotify.NewAuthUserService(client)
+	stfyAuth := spotify.NewAuthService(client)
+	stfy := spotify.NewService(client, stfyAuth)
 
-	tracks := track.NewTracks(spotifyClient)
-	trackHandler := track.NewHandler(tracks)
-	trackHandler.Routes(r)
+	track := handler.TrackInstance(stfy)
+	r.Get("/tracks", track.Find)
 
-	port := "8080"
-	slog.Info("server running on", "port", port)
-	if err := http.ListenAndServe(":"+port, r); err != nil {
-		log.Fatal(err)
+	musicAuth := handler.MusicAuthInstance(stfyUserAuth)
+	r.Get("/music/auth/redirect", musicAuth.Redirect)
+	r.Get("/music/auth/callback", musicAuth.Callback)
+
+	slog.Info("server runnning on port 8080")
+
+	if err := http.ListenAndServe(":8080", r); err != nil {
+		slog.Error("server has stopped running")
+		return
 	}
 }
