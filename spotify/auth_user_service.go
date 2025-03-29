@@ -16,8 +16,8 @@ var (
 )
 
 type Redis interface {
-	SetToken(key, token *string, expiresAt *time.Time) error
-	GetToken(key string) (string, error)
+	SetToken(key string, value *string, expiresAt *time.Time) error
+	GetToken(key string) (*string, error)
 }
 
 type AuthUserService struct {
@@ -29,9 +29,10 @@ type AuthUserService struct {
 	clientSecret string
 }
 
-func NewAuthUserService(client *http.Client) *AuthUserService {
+func NewAuthUserService(client *http.Client, redis Redis) *AuthUserService {
 	return &AuthUserService{
 		client:       client,
+		redis:        redis,
 		url:          os.Getenv("SPOTIFY_AUTH_API_URL"),
 		redirectURI:  os.Getenv("SPOTIFY_REDIRECT_URI"),
 		clientID:     os.Getenv("SPOTIFY_CLIENT_ID"),
@@ -49,7 +50,7 @@ func (s *AuthUserService) SetToken(w http.ResponseWriter, token *string, expires
 		SameSite: http.SameSiteStrictMode,
 	})
 
-	return s.redis.SetToken(&key, token, expiresAt)
+	return s.redis.SetToken(key, token, expiresAt)
 }
 
 func (s *AuthUserService) GetToken(r *http.Request) (*string, error) {
@@ -60,10 +61,10 @@ func (s *AuthUserService) GetToken(r *http.Request) (*string, error) {
 
 	token, err := s.redis.GetToken(key)
 	if err == nil {
-		return &token, nil
+		return token, nil
 	}
 
-	return &token, nil
+	return token, nil
 }
 
 func (s *AuthUserService) ExchangeCodeForToken(code string) (*string, *time.Time, error) {

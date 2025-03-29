@@ -5,6 +5,7 @@ import (
 	"github.com/go-chi/chi/middleware"
 	"github.com/joho/godotenv"
 	"github.com/mtchos/pleiback/handler"
+	"github.com/mtchos/pleiback/redis"
 	"github.com/mtchos/pleiback/spotify"
 	"log/slog"
 	"net/http"
@@ -25,7 +26,9 @@ func main() {
 		Timeout: 10 * time.Second,
 	}
 
-	stfyUserAuth := spotify.NewAuthUserService(client)
+	rds := redis.NewService()
+
+	stfyUserAuth := spotify.NewAuthUserService(client, rds)
 	stfyAuth := spotify.NewAuthService(client)
 	stfy := spotify.NewService(client, stfyAuth)
 

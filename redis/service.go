@@ -13,16 +13,20 @@ type Service struct {
 	client *redis.Client
 }
 
-func NewService() *redis.Client {
-	return redis.NewClient(&redis.Options{
-		Addr:     os.Getenv("REDIS_ADDR"),
-		Password: os.Getenv("REDIS_PASSWORD"),
-		DB:       0,
-	})
+func NewService() *Service {
+	return &Service{
+		client: redis.NewClient(
+			&redis.Options{
+				Addr:     os.Getenv("REDIS_ADDR"),
+				Password: os.Getenv("REDIS_PASSWORD"),
+				DB:       0,
+			},
+		),
+	}
 }
 
-func (s *Service) SetToken(key, value *string, expiresAt *time.Time) error {
-	return s.client.Set(context.Background(), *key, *value, time.Until(*expiresAt)).Err()
+func (s *Service) SetToken(key string, value *string, expiresAt *time.Time) error {
+	return s.client.Set(context.Background(), key, *value, time.Until(*expiresAt)).Err()
 }
 
 func (s *Service) GetToken(value string) (*string, error) {
